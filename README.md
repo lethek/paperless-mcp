@@ -150,6 +150,7 @@ Set `PAPERLESS_API_VERSION=10` to opt into v10 once you are ready for those chan
 | `MCP_ALLOWED_HOSTS`     | No              | Comma-separated `Host` allowlist for DNS-rebinding protection (http mode). Empty (default) disables host validation                                               |
 | `EMBEDDING_PROVIDER`    | No              | `openai` or `ollama` (default: `openai`)                                                                                                                          |
 | `OPENAI_API_KEY`        | If using OpenAI | Required for OpenAI embeddings                                                                                                                                    |
+| `OPENAI_BASE_URL`       | No              | Base URL of an OpenAI-compatible API such as LiteLLM (default: `https://api.openai.com/v1`)                                                                       |
 | `OLLAMA_URL`            | If using Ollama | Ollama server URL (default: `http://localhost:11434`)                                                                                                             |
 | `EMBEDDING_MODEL`       | No              | Model name (defaults per provider)                                                                                                                                |
 | `EMBEDDING_DIMENSIONS`  | No              | Vector dimensions (defaults per provider)                                                                                                                         |

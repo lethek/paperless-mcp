@@ -116,6 +116,36 @@ describe("embeddings with openai provider", () => {
   });
 });
 
+describe("embeddings with a custom OPENAI_BASE_URL", () => {
+  beforeEach(() => {
+    vi.stubEnv("EMBEDDING_PROVIDER", "openai");
+    vi.stubEnv("OPENAI_API_KEY", "sk-test-key");
+    vi.stubEnv("OPENAI_BASE_URL", "http://litellm.local:4000/v1/");
+    vi.resetModules();
+  });
+
+  afterEach(() => {
+    vi.stubEnv("OPENAI_BASE_URL", "");
+    vi.restoreAllMocks();
+  });
+
+  it("posts to the configured base URL", async () => {
+    const mockFetch = vi.fn().mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve({ data: [{ index: 0, embedding: [0.1] }] }),
+    });
+    vi.stubGlobal("fetch", mockFetch);
+
+    const { embed } = await import("../embeddings.js");
+    await embed(["hello"]);
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      "http://litellm.local:4000/v1/embeddings",
+      expect.anything(),
+    );
+  });
+});
+
 describe("embeddings with openai missing key", () => {
   beforeEach(() => {
     vi.stubEnv("EMBEDDING_PROVIDER", "openai");

@@ -13,6 +13,8 @@ if (isNaN(EMBEDDING_DIMENSIONS) || EMBEDDING_DIMENSIONS <= 0) {
   process.exit(1);
 }
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+const OPENAI_DEFAULT_URL = "https://api.openai.com/v1";
+const OPENAI_BASE_URL = (process.env.OPENAI_BASE_URL || OPENAI_DEFAULT_URL).replace(/\/+$/, "");
 const OLLAMA_URL = (process.env.OLLAMA_URL || "http://localhost:11434").replace(/\/+$/, "");
 
 export function getEmbeddingDimensions(): number {
@@ -25,7 +27,7 @@ export function getProviderInfo() {
 
 async function embedOpenAI(texts: string[]): Promise<number[][]> {
   if (!OPENAI_API_KEY) throw new Error("OPENAI_API_KEY is required when using OpenAI embeddings");
-  const res = await fetch("https://api.openai.com/v1/embeddings", {
+  const res = await fetch(`${OPENAI_BASE_URL}/embeddings`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${OPENAI_API_KEY}`,
